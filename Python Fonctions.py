@@ -33,3 +33,65 @@ print(data_test_avg_OS_COUNTRY)
 
 ################################ Calculer une nouvelle variable #################################### 
 data_test_sum_OS['average_likes_sent'] = data_test_sum_OS['LIKES_SENT'] / data_test_sum_OS['CONNECTED']
+
+##################################### fonction #################################################
+
+def compteur3():
+    i = 0
+    while i < 3:
+        print(i)
+        i = i + 1
+compteur3()
+
+# fonctions paramétriques
+def compteur(stop):
+    i = 0
+    while i < stop:
+        print(i)
+        i = i + 1
+
+compteur(15)
+
+def compteur_complet(start, stop, step):
+    i = start
+    while i < stop:
+        print(i)
+        i = i + step
+
+compteur_complet(1, 7, 2)
+
+#procedures
+def cube(w):
+    return w**3
+
+cube(3)
+a = cube(4)
+a
+
+#paramètre par défaut
+def politesse(nom, titre ="Mr"):
+    print("Veuillez agréer,", titre, nom, ", mes salutations distinguées.")
+    
+politesse("Dupont")
+politesse('Durand', 'Ms')
+
+def mesure(sujet="je", verbe="mesure", quantite=175, unite="cm"):
+    print(sujet, verbe, quantite, unite)
+
+mesure()
+mesure('il')
+mesure(verbe='pese')
+mesure(unite = "kg", verbe = "pese"  )
+mesure(unite = "kg", verbe = "pese", quantite = 80 )
+
+
+ #V=(4/3)πR**3
+
+def cube(n):
+    return n**3
+        
+def volume_sphere(r):
+    return 4 / 3 * np.pi * cube(r)
+
+r = float(input("Entrez la valeur du rayon : "))
+print("Le volume de cette sphere vaut", volume_sphere(r))
