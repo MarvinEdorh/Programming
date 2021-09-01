@@ -200,13 +200,12 @@ SELECT fullvisitorid, product FROM visitors CROSS JOIN products #FROM visitors, 
 
 #############################################################################################
 
-SELECT *
-FROM commande
+SELECT fullvisitorid, device.deviceCategory
+FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` AS day_1
 WHERE EXISTS (
-    SELECT * 
-    FROM produit 
-    WHERE c_produit_id = p_id
-)
+    SELECT device.deviceCategory
+    FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161202` AS day_2
+    WHERE day_1.fullvisitorid = day_2.fullvisitorid )
 
 
 
