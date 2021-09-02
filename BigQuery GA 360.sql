@@ -109,7 +109,7 @@ FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161225`
 
 SELECT DISTINCT fullvisitorid, 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161224` 
-EXCEPT DISTINCT
+EXCEPT DISTINCT #soustraction
 SELECT DISTINCT fullvisitorid, 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161225` 
 
@@ -125,8 +125,8 @@ FROM `bigquery-public-data.google_analytics_sample.ga_sessions_2016*`AS ga,
 UNNEST(ga.hits) AS hits WHERE  hits.transaction.transactionId IS NOT NULL
 GROUP BY fullvisitorid)
 SELECT visits.fullvisitorid, visits.visits, transactions.transactions  FROM visits
-INNER JOIN  transactions
-USING (fullvisitorid) # ON visits.fullvisitorid = transactions.fullvisitorid
+INNER JOIN  transactions #jointure unique sur les 2 tables
+ON visits.fullvisitorid = transactions.fullvisitorid
 
 WITH visits AS (
 SELECT fullvisitorid, SUM(totals.visits) AS visits
@@ -138,7 +138,7 @@ FROM `bigquery-public-data.google_analytics_sample.ga_sessions_2016*`AS ga,
 UNNEST(ga.hits) AS hits WHERE  hits.transaction.transactionId IS NOT NULL
 GROUP BY fullvisitorid)
 SELECT visits.fullvisitorid, visits.visits, transactions.transactions  FROM visits
-LEFT JOIN  transactions #LEFT OUTER JOIN
+LEFT JOIN  transactions #LEFT OUTER JOIN #jointure la 1ère table
 USING (fullvisitorid)
 
 WITH visits AS (
@@ -151,7 +151,7 @@ FROM `bigquery-public-data.google_analytics_sample.ga_sessions_2016*`AS ga,
 UNNEST(ga.hits) AS hits WHERE  hits.transaction.transactionId IS NOT NULL
 GROUP BY fullvisitorid)
 SELECT visits.fullvisitorid, visits.visits, transactions.transactions  FROM visits
-RIGHT JOIN  transactions #RIGHT OUTER JOIN
+RIGHT JOIN  transactions #RIGHT OUTER JOIN #jointure sur la 2ème table
 USING (fullvisitorid) 
 
 WITH visits AS (
@@ -164,7 +164,7 @@ FROM `bigquery-public-data.google_analytics_sample.ga_sessions_2016*`AS ga,
 UNNEST(ga.hits) AS hits WHERE  hits.transaction.transactionId IS NOT NULL
 GROUP BY fullvisitorid)
 SELECT visits.fullvisitorid, visits.visits, transactions.transactions  FROM visits
-FULL JOIN  transactions #FULL OUTER JOIN
+FULL JOIN  transactions #FULL OUTER JOIN #jointure complete sur les 2 tables
 USING (fullvisitorid)
 
 WITH 
@@ -172,23 +172,23 @@ visitors AS (SELECT DISTINCT fullvisitorid FROM `bigquery-public-data.google_ana
 products AS (SELECT DISTINCT hp.v2ProductName AS product FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*`
              AS ga, UNNEST(ga.hits) AS hits, UNNEST(hits.product) AS hp )
 
-SELECT fullvisitorid, product FROM visitors CROSS JOIN products #FROM visitors, products 
+SELECT fullvisitorid, product FROM visitors CROSS JOIN products #FROM visitors, products #developpement factoriel
 
-#############################################################################################
+######################################## chaine de caractère ######################################
 
 SELECT DISTINCT CONCAT("ID",fullvisitorid) AS fullvisitorid, device.deviceCategory,
-LENGTH(device.deviceCategory),
-LEFT(device.deviceCategory,1), 
-RIGHT(device.deviceCategory,1),
-UPPER(device.deviceCategory),
-LOWER(UPPER(device.deviceCategory)),
-LPAD(device.deviceCategory,10,"0"),
-RPAD(device.deviceCategory,10,"0"),
-LTRIM(LPAD(device.deviceCategory,10,"0"),"0"),
-RTRIM(RPAD(device.deviceCategory,10,"0"),"0"),
-TRIM(device.deviceCategory,"e"),
-REPLACE(device.deviceCategory,"e","o"),
-REVERSE(device.deviceCategory),
-SUBSTR(device.deviceCategory,1, 2),
-SUBSTR(device.deviceCategory,3),
+LENGTH(device.deviceCategory), #nombre de caractère
+LEFT(device.deviceCategory,1), #x caratères depuis la gauche
+RIGHT(device.deviceCategory,1), x caratères depuis la droite
+UPPER(device.deviceCategory), majuscule
+LOWER(UPPER(device.deviceCategory)), minuscule
+LPAD(device.deviceCategory,10,"0"), ajoute x caratères depuis la gauche jusqu'à qu'il y en ai 10
+RPAD(device.deviceCategory,10,"0"), ajoute x caratères depuis la droite jusqu'à qu'il y en ai 10
+LTRIM(LPAD(device.deviceCategory,10,"0"),"0"), supprimer la chaine de caratères "..." depuis la gauche 
+RTRIM(RPAD(device.deviceCategory,10,"0"),"0"), supprimer la chaine de caratères "..." depuis la droite
+TRIM(device.deviceCategory,"e"), supprimer la chaine de caratères "..."
+REPLACE(device.deviceCategory,"1","2"), #remplacer 1 par 2
+REVERSE(device.deviceCategory), #inverser la chaine de caractère
+SUBSTR(device.deviceCategory,1, 2), 2 caratères depuis la position 1
+SUBSTR(device.deviceCategory,3), tous les caracteres depuis la position 3
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201`
