@@ -238,6 +238,8 @@ LAST_DAY(CURRENT_DATE(), WEEK) AS last_day,
 LAST_DAY(CURRENT_DATE(), WEEK(MONDAY)) AS last_day,
 LAST_DAY(CURRENT_DATE(), ISOWEEK) AS last_day,
 LAST_DAY(CURRENT_DATE(), ISOYEAR) AS last_day,
+PARSE_DATE("%Y%m%d", date)
+FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201`limit 1
 
 SELECT 
 CURRENT_DATETIME(),DATETIME(hits.hour,hits.minute,hits.minute,00,00),
