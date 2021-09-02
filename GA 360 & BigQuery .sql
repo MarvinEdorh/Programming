@@ -346,3 +346,14 @@ SELECT fullvisitorid,ARRAY_AGG(DISTINCT hp.v2ProductName)
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` AS ga, 
 UNNEST(ga.hits) AS hits, UNNEST(hits.product) AS hp 
 WHERE hits.transaction.transactionId IS NOT NULL GROUP BY fullvisitorid
+
+WITH products AS (
+SELECT fullvisitorid,COUNT(DISTINCT hp.v2ProductName) AS products 
+FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` AS ga, 
+UNNEST(ga.hits) AS hits, UNNEST(hits.product) AS hp GROUP BY fullvisitorid ),
+
+classe AS (
+SELECT fullvisitorid, products.products, NTILE(2) OVER (ORDER BY products.products DESC) AS classe
+FROM products ORDER BY products DESC )
+
+SELECT MAX(products) AS median_poduct FROM classe WHERE classe.classe = 2
