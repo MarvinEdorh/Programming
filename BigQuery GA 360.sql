@@ -1,11 +1,11 @@
 #################################################### ordre #########################################
 
-SELECT fullvisitorid, SUM(totals.visits) 
+SELECT fullvisitorid, SUM(totals.visits) #selection
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*` 
-WHERE _TABLE_SUFFIX = '20161201'
-GROUP BY fullvisitorid
-HAVING SUM(totals.visits) > 0
-UNION ALL
+WHERE _TABLE_SUFFIX = '20161201' #conditions
+GROUP BY fullvisitorid #aggregation
+HAVING SUM(totals.visits) > 0 #filtre
+UNION ALL #concatenation / jointure
 SELECT fullvisitorid, SUM(totals.visits)
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*` 
 WHERE _TABLE_SUFFIX = '20161202'
@@ -15,6 +15,10 @@ ORDER BY fullvisitorid
 ########################################### selection ########################################
 
 SELECT DISTINCT fullvisitorid, device.deviceCategory
+CASE 
+    WHEN device.deviceCategory = "desktop" THEN 1 
+    WHEN device.deviceCategory = "tablet" THEN 2 ELSE 3 END, 
+10 AS dix
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` 
 
 ##################################### conditions ###############################################
@@ -81,7 +85,7 @@ MAX(date), #maximum
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_201612*` 
 GROUP BY fullvisitorid
 
-#############################################################################################
+###################################### filtre ################################################
 
 SELECT fullvisitorid, SUM(totals.visits) AS visits
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_201612*` 
@@ -89,15 +93,7 @@ GROUP BY fullvisitorid
 HAVING SUM(totals.visits) >= 2
 ORDER BY visits DESC
 
-#############################################################################################
-
-SELECT DISTINCT fullvisitorid, 
-CASE 
-    WHEN device.deviceCategory = "desktop" THEN 1 
-    WHEN device.deviceCategory = "tablet" THEN 2 ELSE 3 END
-FROM `bigquery-public-data.google_analytics_sample.ga_sessions_201612*` 
-
-#############################################################################################
+############################################ concatenation #######################################
 
 SELECT DISTINCT fullvisitorid, 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161224` 
@@ -105,15 +101,11 @@ UNION ALL
 SELECT DISTINCT fullvisitorid, 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161225`
 
-############################################################################################# 
-
 SELECT DISTINCT fullvisitorid, 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161224` 
 INTERSECT DISTINCT
 SELECT DISTINCT fullvisitorid, 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161225` 
-
-#############################################################################################
 
 SELECT DISTINCT fullvisitorid, 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161224` 
@@ -121,7 +113,7 @@ EXCEPT DISTINCT
 SELECT DISTINCT fullvisitorid, 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161225` 
 
-#############################################################################################
+######################################## jointure ############################################
 
 WITH visits AS (
 SELECT fullvisitorid, SUM(totals.visits) AS visits
