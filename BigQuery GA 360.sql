@@ -1,6 +1,4 @@
-SELECT DISTINCT date FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20170801` 
-
-#############################################################################################
+#################################################### ordre #########################################
 
 SELECT fullvisitorid, SUM(totals.visits) 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*` 
@@ -14,86 +12,72 @@ WHERE _TABLE_SUFFIX = '20161202'
 GROUP BY fullvisitorid
 ORDER BY fullvisitorid
 
-#############################################################################################
-
-SELECT DISTINCT device.deviceCategory
-FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` 
-
-#############################################################################################
+########################################### selection ########################################
 
 SELECT DISTINCT fullvisitorid, device.deviceCategory
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` 
-WHERE device.deviceCategory = "desktop"
+
+##################################### conditions ###############################################
 
 SELECT DISTINCT fullvisitorid, device.deviceCategory
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` 
-WHERE device.deviceCategory <> "desktop"
+WHERE device.deviceCategory = "desktop" #egale
 
 SELECT DISTINCT fullvisitorid, device.deviceCategory
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` 
-WHERE device.deviceCategory != "desktop"
+WHERE device.deviceCategory <> "desktop" #different
 
 SELECT DISTINCT fullvisitorid, device.deviceCategory
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` 
-WHERE device.deviceCategory IN ("mobile", "tablet")
+WHERE device.deviceCategory != "desktop" #different
 
 SELECT DISTINCT fullvisitorid, device.deviceCategory
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` 
-WHERE device.deviceCategory LIKE "%le%"
+WHERE device.deviceCategory IN ("mobile", "tablet") #parmis
 
 SELECT DISTINCT fullvisitorid, device.deviceCategory
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` 
-WHERE device.deviceCategory NOT LIKE "%le%" OR device.deviceCategory NOT LIKE "d%k" 
+WHERE ( device.deviceCategory LIKE "le%" OR device.deviceCategory LIKE "%le" #commence par ... ou fini par ...
+OR device.deviceCategory LIKE "%le%" ) AND device.deviceCategory NOT LIKE "d%k" #ou contient ... et ne commence et fini par ...
 
 SELECT DISTINCT fullvisitorid, date
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*` 
-WHERE _TABLE_SUFFIX > '20161201' ORDER BY date
+WHERE _TABLE_SUFFIX > '20161201' ORDER BY date #superieur à
 
 SELECT DISTINCT fullvisitorid, date
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*` 
-WHERE _TABLE_SUFFIX >= '20161201' ORDER BY date
+WHERE _TABLE_SUFFIX >= '20161201' ORDER BY date #superieur ou egal à
 
 SELECT DISTINCT fullvisitorid, date
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*` 
-WHERE _TABLE_SUFFIX < '20161201' ORDER BY date DESC
+WHERE _TABLE_SUFFIX < '20161201' ORDER BY date DESC #inferieur à
 
 SELECT DISTINCT fullvisitorid, date
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*` 
-WHERE _TABLE_SUFFIX <= '20161201' ORDER BY date DESC
+WHERE _TABLE_SUFFIX <= '20161201' ORDER BY date DESC #inferieur à
 
 SELECT DISTINCT fullvisitorid, date
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*` 
-WHERE _TABLE_SUFFIX BETWEEN '20161201' AND '20161203' ORDER BY date
+WHERE _TABLE_SUFFIX BETWEEN '20161201' AND '20161203' ORDER BY date #entre
 
 SELECT DISTINCT fullvisitorid
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201`AS ga, 
 UNNEST(ga.hits) AS hits 
-WHERE hits.transaction.transactionId IS NULL 
+WHERE hits.transaction.transactionId IS NULL #est vide
 
 SELECT DISTINCT fullvisitorid
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201`AS ga, 
 UNNEST(ga.hits) AS hits 
-WHERE hits.transaction.transactionId IS NOT NULL 
+WHERE hits.transaction.transactionId IS NOT NULL #n'est pas vide
 
-#############################################################################################
+################################# aggregation ############################################
 
-SELECT fullvisitorid, SUM(totals.visits) 
-FROM `bigquery-public-data.google_analytics_sample.ga_sessions_201612*` 
-GROUP BY fullvisitorid
-
-SELECT fullvisitorid, ROUND(AVG(totals.visits),2) 
-FROM `bigquery-public-data.google_analytics_sample.ga_sessions_201612*` 
-GROUP BY fullvisitorid
-
-SELECT fullvisitorid, COUNT(DISTINCT device.deviceCategory) 
-FROM `bigquery-public-data.google_analytics_sample.ga_sessions_201612*` 
-GROUP BY fullvisitorid
-
-SELECT fullvisitorid, MIN(date) 
-FROM `bigquery-public-data.google_analytics_sample.ga_sessions_201612*` 
-GROUP BY fullvisitorid
-
-SELECT fullvisitorid, MAX(date)
+SELECT fullvisitorid, 
+SUM(totals.visits) #somme
+ROUND(AVG(totals.visits),2) #moyenne arrondie
+COUNT(DISTINCT device.deviceCategory) #compte
+MIN(date), #minimum
+MAX(date), #maximum
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_201612*` 
 GROUP BY fullvisitorid
 
