@@ -357,3 +357,21 @@ SELECT fullvisitorid, products.products, NTILE(2) OVER (ORDER BY products.produc
 FROM products ORDER BY products DESC )
 
 SELECT MAX(products) AS median_poduct FROM classe WHERE classe.classe = 2
+
+
+WITH products AS (
+SELECT  hp.v2ProductName, geoNetwork.continent, COUNT(DISTINCT fullvisitorid) AS visits
+FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` AS ga, 
+UNNEST(ga.hits) AS hits, UNNEST(hits.product) AS hp GROUP BY hp.v2ProductName, geoNetwork.continent)
+
+SELECT v2ProductName,continent, visits, 
+SUM(visits) OVER(PARTITION BY v2ProductName), 
+SUM(visits) OVER(PARTITION BY v2ProductName ORDER BY visits ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW), 
+SUM(visits) OVER(PARTITION BY v2ProductName ORDER BY visits ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING),
+SUM(visits) OVER(PARTITION BY v2ProductName ORDER BY visits DESC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW), 
+SUM(visits) OVER(PARTITION BY v2ProductName ORDER BY visits DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING), 
+SUM(visits) OVER(PARTITION BY v2ProductName ORDER BY visits DESC ROWS BETWEEN 0 PRECEDING AND 2 FOLLOWING ),
+SUM(visits) OVER(PARTITION BY v2ProductName ORDER BY visits DESC ROWS BETWEEN 1 PRECEDING AND 2 FOLLOWING ),
+SUM(visits) OVER(PARTITION BY v2ProductName ORDER BY visits DESC ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING ),
+ROW_NUMBER() OVER(PARTITION BY v2ProductName),
+FROM products ORDER BY v2ProductName, visits DESC 
