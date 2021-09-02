@@ -14,11 +14,9 @@ ORDER BY fullvisitorid
 
 ########################################### selection ########################################
 
-SELECT DISTINCT fullvisitorid, device.deviceCategory
-CASE 
-    WHEN device.deviceCategory = "desktop" THEN 1 
-    WHEN device.deviceCategory = "tablet" THEN 2 ELSE 3 END, 
-10 AS dix
+SELECT DISTINCT fullvisitorid, device.deviceCategory, 10 AS dix,
+CASE WHEN device.deviceCategory = "desktop" THEN 1 
+     WHEN device.deviceCategory = "tablet" THEN 2 ELSE 3 END
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` 
 
 ##################################### conditions ###############################################
