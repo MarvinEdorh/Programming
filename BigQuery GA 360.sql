@@ -1,4 +1,4 @@
-#################################################### ordre #########################################
+#################################################### syntax #########################################
 
 SELECT fullvisitorid, SUM(totals.visits) #selection
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*` 
@@ -58,11 +58,11 @@ WHERE _TABLE_SUFFIX < '20161201' ORDER BY date DESC #inferieur à
 
 SELECT DISTINCT fullvisitorid, date
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*` 
-WHERE _TABLE_SUFFIX <= '20161201' ORDER BY date DESC #inferieur à
+WHERE _TABLE_SUFFIX <= '20161201' ORDER BY date DESC #inferieur ou egal à
 
 SELECT DISTINCT fullvisitorid, date
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*` 
-WHERE _TABLE_SUFFIX BETWEEN '20161201' AND '20161203' ORDER BY date #entre
+WHERE _TABLE_SUFFIX BETWEEN '20161201' AND '20161231' ORDER BY date #entre
 
 SELECT DISTINCT fullvisitorid
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201`AS ga, 
@@ -72,7 +72,7 @@ WHERE hits.transaction.transactionId IS NULL #est vide
 SELECT DISTINCT fullvisitorid
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201`AS ga, 
 UNNEST(ga.hits) AS hits 
-WHERE hits.transaction.transactionId IS NOT NULL #n'est pas vide
+WHERE hits.transaction.transactionId IS NOT NULL #est non vide
 
 ################################# aggregation ############################################
 
@@ -97,13 +97,13 @@ ORDER BY visits DESC
 
 SELECT DISTINCT fullvisitorid, 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161224` 
-UNION ALL
+UNION ALL #fusion
 SELECT DISTINCT fullvisitorid, 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161225`
 
 SELECT DISTINCT fullvisitorid, 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161224` 
-INTERSECT DISTINCT
+INTERSECT DISTINCT #intersection
 SELECT DISTINCT fullvisitorid, 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161225` 
 
