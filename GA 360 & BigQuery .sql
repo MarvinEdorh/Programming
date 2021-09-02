@@ -339,3 +339,9 @@ TIMESTAMP_MILLIS(1230219000000),
 TIMESTAMP_MICROS(1230219000000000),
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` AS ga, 
 UNNEST(ga.hits) AS hits limit 1
+
+####################################################################################################################
+
+SELECT fullvisitorid,ARRAY_AGG(DISTINCT hp.v2ProductName) 
+FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` AS ga, 
+UNNEST(ga.hits) AS hits, UNNEST(hits.product) AS hp GROUP BY fullvisitorid
