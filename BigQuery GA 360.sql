@@ -81,7 +81,7 @@ SELECT fullvisitorid, SUM(totals.visits)
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_201612*` 
 GROUP BY fullvisitorid
 
-SELECT fullvisitorid, AVG(totals.visits) 
+SELECT fullvisitorid, ROUND(AVG(totals.visits),2) 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_201612*` 
 GROUP BY fullvisitorid
 
