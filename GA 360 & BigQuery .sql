@@ -344,4 +344,5 @@ UNNEST(ga.hits) AS hits limit 1
 
 SELECT fullvisitorid,ARRAY_AGG(DISTINCT hp.v2ProductName) 
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201` AS ga, 
-UNNEST(ga.hits) AS hits, UNNEST(hits.product) AS hp GROUP BY fullvisitorid
+UNNEST(ga.hits) AS hits, UNNEST(hits.product) AS hp 
+WHERE hits.transaction.transactionId IS NOT NULL GROUP BY fullvisitorid
