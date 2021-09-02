@@ -200,7 +200,7 @@ SELECT fullvisitorid, product FROM visitors CROSS JOIN products #FROM visitors, 
 
 #############################################################################################
 
-SELECT DISTINCT CONCAT('ID',fullvisitorid) AS fullvisitorid, device.deviceCategory,
+SELECT DISTINCT CONCAT("ID",fullvisitorid) AS fullvisitorid, device.deviceCategory,
 LENGTH(device.deviceCategory),
 LEFT(device.deviceCategory,1), 
 RIGHT(device.deviceCategory,1),
@@ -211,4 +211,8 @@ RPAD(device.deviceCategory,10,"0"),
 LTRIM(LPAD(device.deviceCategory,10,"0"),"0"),
 RTRIM(RPAD(device.deviceCategory,10,"0"),"0"),
 TRIM(device.deviceCategory,"e"),
+REPLACE(device.deviceCategory,"e","o"),
+REVERSE(device.deviceCategory),
+SUBSTR(device.deviceCategory,1, 2),
+SUBSTR(device.deviceCategory,3),
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_20161201`
