@@ -43,9 +43,8 @@ FULL JOIN Events USING (ad_id) GROUP BY Ads.ad_id, event_type,
 --4) The number of events over the last week per each active ad — broken down by event type and date (most recent first).
 
 SELECT Ads.ad_id, COUNT(event_id) FROM Ads 
-FULL JOIN Events
-USING (ad_id)
-WHERE status = "active" AND date > DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
+FULL JOIN Events USING (ad_id) WHERE status = "active" 
+AND date > DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
 GROUP BY Ads.ad_id
 
 ------------------------
