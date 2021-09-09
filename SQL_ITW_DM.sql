@@ -29,9 +29,18 @@ For each question, give the answer and the SQL query that would answer the quest
 ------------------------
 ---1) The number of active ads.
 
+SELECT COUNT(ad_id) FROM Ads WHERE status = "active"
+
 --2) All active campaigns. (A campaign is active if there’s at least one active ad.)
 
---3) The number of events per each ad — broken down by event type.
+SELECT campaign_id FROM Ads WHERE status = "active" 
+
+--3) The number of events per each ad — ad_id, event_type, by event type.
+
+SELECT Ads.ad_id, event_type, COUNT(ad_id) FROM Ads 
+FULL JOIN Events
+USING (ad_id)
+GROUP BY ad_id, event_type,
 
 --4) The number of events over the last week per each active ad — broken down by event type and date (most recent first).
 
