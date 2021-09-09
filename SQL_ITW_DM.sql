@@ -38,9 +38,7 @@ SELECT campaign_id FROM Ads WHERE status = "active"
 --3) The number of events per each ad — ad_id, event_type, by event type.
 
 SELECT Ads.ad_id, event_type, COUNT(event_id) FROM Ads 
-FULL JOIN Events
-USING (ad_id)
-GROUP BY Ads.ad_id, event_type,
+FULL JOIN Events USING (ad_id) GROUP BY Ads.ad_id, event_type,
 
 --4) The number of events over the last week per each active ad — broken down by event type and date (most recent first).
 
