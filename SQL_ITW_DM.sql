@@ -56,12 +56,10 @@ GROUP BY Ads.ad_id
 
 --5) CTR (click-through rate) and  CVR (conversion rate) for each ad. 
 
-WITH click AS (SELECT ad_id, COUNT(event_type) AS click 
-               FROM Events WHERE event_type = "click" GROUP BY ad_id), 
-     conversion AS (SELECT ad_id, COUNT(event_type) AS click 
-               FROM Events WHERE event_type = "conversion" GROUP BY ad_id), 
-     impression AS (SELECT ad_id, COUNT(event_type) AS click 
-               FROM Events WHERE event_type = "impression" GROUP BY ad_id)
+WITH click AS (SELECT ad_id, COUNT(event_type) AS click FROM Events WHERE event_type = "click" GROUP BY ad_id), 
+     conversion AS (SELECT ad_id, COUNT(event_type) AS click FROM Events WHERE event_type = "conversion" GROUP BY ad_id), 
+     impression AS (SELECT ad_id, COUNT(event_type) AS click FROM Events WHERE event_type = "impression" GROUP BY ad_id)
+
 SELECT impression.ad_id, click.click/impression.impression AS CTR, conversion.conversion/impression.impression AS CVR
 FROM impression INNER JOIN conversion USING (ad_id) click JOIN conversion USING (ad_id)
 
